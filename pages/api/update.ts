@@ -24,7 +24,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     };
 
     const redis = Redis.fromEnv();
-    const redisKey = `goerli-hourly`;
+    const redisKey = `goerli-every-thirty-minutes`;
     const lastFeeInfo = await redis.lindex(redisKey, 0);
     const lastTime = lastFeeInfo === null ? 0 : lastFeeInfo.time;
     

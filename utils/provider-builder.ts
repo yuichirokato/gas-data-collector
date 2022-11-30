@@ -11,6 +11,11 @@ const BuilderConfig = {
         url: 'https://eth-goerli.g.alchemy.com/v2/',
         apiKey: process.env.ALCHEMY_API_KEY || '',
         name: 'Ethereum Goerli'
+    },
+    polygon: {
+        url: 'https://polygon-mainnet.g.alchemy.com/v2/',
+        apiKey: process.env.POLYGON_ALCHEMY_API_KEY || '',
+        name: 'Polygon Mainnet'
     }
 };
 

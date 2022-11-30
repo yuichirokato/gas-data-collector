@@ -3,7 +3,6 @@ import { ethers } from "ethers";
 import { MAX_DATA_COUNT } from "../utils/constants";
 import FeeInfo from "../entities/feeinfo";
 import { BuilderConfig, ProviderBuilder } from '../utils/provider-builder';
-import build from 'next/dist/build';
 
 class GasDataCollecter {
     private redisKey: string;

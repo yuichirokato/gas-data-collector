@@ -13,6 +13,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         {
             redisKey: 'goerli-every-thirty-minutes',
             providerConfig: BuilderConfig.goerli
+        },
+        {
+            redisKey: 'polygon-every-thirty-minutes',
+            providerConfig: BuilderConfig.polygon
         }
     ];
 

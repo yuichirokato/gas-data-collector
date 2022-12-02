@@ -20,6 +20,8 @@ class EtherProviderWrapper implements ProviderWrapper {
         const feeHistory = await this.provider.send('eth_feeHistory', [1, "latest", [20, 50, 80]]);
         const coinPrice = await new CoinPriceFetcher(this.symbol).fetch();
 
+        console.log(`fetch url: jsonRpcProvider`);
+
         const now = new Date();
         const minute = now.getMinutes() >= 30 ? 30 : 0;
 
@@ -49,6 +51,7 @@ class PolygonProviderWrapper implements ProviderWrapper {
         const jsonData = await response.json();
         const coinPrice = await new CoinPriceFetcher(this.symbol).fetch();
 
+        console.log(`fetch url: https://gasstation-mainnet.matic.network/v2`);
         console.log(`json: ${JSON.stringify(jsonData)}`);
 
         const now = new Date();

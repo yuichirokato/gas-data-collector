@@ -32,6 +32,7 @@ class ProviderBuilder {
         }
 
         if (config.name === 'Polygon Mainnet') {
+            console.log("use polygon wrapper");
             return new PolygonProviderWrapper(config.symbol);
         } else {
             const url = `${config.url}${config.apiKey}`;

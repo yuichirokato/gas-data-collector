@@ -1,28 +1,19 @@
 import { Redis } from '@upstash/redis/with-fetch';
-import { ethers } from "ethers";
 import { MAX_DATA_COUNT } from "../utils/constants";
 import FeeInfo from "../entities/feeinfo";
-import { BuilderConfig, ProviderBuilder } from '../utils/provider-builder';
+import { ProviderWrapper } from '../utils/provider-wrapper';
 
 class GasDataCollecter {
     private redisKey: string;
-    private builderConfig: any;
+    private wrapper: ProviderWrapper
 
-    constructor(redisKey: string, builderConfig: any) {
+    constructor(redisKey: string, wrapper: ProviderWrapper) {
         this.redisKey = redisKey;
-        this.builderConfig = builderConfig;
+        this.wrapper = wrapper;
     }
 
     async collectGasData(): Promise<FeeInfo> {
-        const provider = new ProviderBuilder().buildFromConfig(this.builderConfig);
-        const feeHistory = await provider.send('eth_feeHistory', [1, "latest", [20, 50, 80]]);
-        const feeInfo = new FeeInfo(
-            Number(feeHistory.oldestBlock), 
-            new Date().setUTCMinutes(0, 0, 0),
-            Number(feeHistory.baseFeePerGas[0]),
-            feeHistory.reward[0].map((s: any) => Number(s))
-        );
-
+        const feeInfo = await this.wrapper.fetchGasData();
         const redis = Redis.fromEnv();
         const lastFeeInfo = await redis.lindex(this.redisKey, 0);
         const lastTime = lastFeeInfo === null ? 0 : lastFeeInfo.time;

@@ -1,14 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { verifySignature } from "@upstash/qstash/nextjs";
 import GasDataCollecter from "../../services/gas-data-collector";
-import { BuilderConfig } from "../../utils/provider-builder";
+import { BuilderConfig, ProviderBuilder } from "../../utils/provider-builder";
 import GasDataCollectError from "../../entities/gas-data-collect-error";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
     const configs = [
         {
             redisKey: 'ethereum-every-thirty-minutes',
-            providerConfig: BuilderConfig.mainnet 
+            providerConfig: BuilderConfig.mainnet
         },
         {
             redisKey: 'goerli-every-thirty-minutes',
@@ -20,10 +20,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         }
     ];
 
-    const providers = configs.map(config => new GasDataCollecter(config.redisKey, config.providerConfig));
+    const builder = new ProviderBuilder();
+    const collecters = configs
+        .map(config => [config.redisKey, builder.buildFromConfig(config.providerConfig)])
+        .map((pair: any) => new GasDataCollecter(pair[0], pair[1]));
 
     try {
-        await Promise.all(providers.map(provider => provider.collectGasData()));
+        await Promise.all(collecters.map(collecter => collecter.collectGasData()));
         res.status(200);
     } catch (e) {
         if (e instanceof GasDataCollectError) {

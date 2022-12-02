@@ -1,4 +1,4 @@
-import { Redis } from '@upstash/redis/with-fetch';
+import { Redis } from '@upstash/redis';
 import { MAX_DATA_COUNT } from "../utils/constants";
 import FeeInfo from "../entities/feeinfo";
 import { ProviderWrapper } from '../utils/provider-wrapper';

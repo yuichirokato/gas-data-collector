@@ -20,9 +20,12 @@ class EtherProviderWrapper implements ProviderWrapper {
         const feeHistory = await this.provider.send('eth_feeHistory', [1, "latest", [20, 50, 80]]);
         const coinPrice = await new CoinPriceFetcher(this.symbol).fetch();
 
+        const now = new Date();
+        const minute = now.getMinutes() >= 30 ? 30 : 0;
+
         const feeInfo = new FeeInfo(
             Number(feeHistory.oldestBlock), 
-            new Date().setUTCMinutes(0, 0, 0),
+            now.setUTCMinutes(minute, 0, 0),
             Number(feeHistory.baseFeePerGas[0]),
             feeHistory.reward[0].map((s: any) => Number(s))
         );

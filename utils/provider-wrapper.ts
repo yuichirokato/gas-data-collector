@@ -23,7 +23,7 @@ class EtherProviderWrapper implements ProviderWrapper {
         console.log(`fetch url: jsonRpcProvider`);
 
         const now = new Date();
-        const minute = now.getMinutes() >= 30 ? 30 : 0;
+        const minute = now.getMinutes();
 
         const feeInfo = new FeeInfo(
             Number(feeHistory.oldestBlock), 

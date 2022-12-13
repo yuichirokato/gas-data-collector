@@ -55,7 +55,7 @@ class PolygonProviderWrapper implements ProviderWrapper {
         console.log(`json: ${JSON.stringify(jsonData)}`);
 
         const now = new Date();
-        const minute = now.getMinutes() >= 30 ? 30 : 0;
+        const minute = now.getMinutes();
 
         const feeInfo = new FeeInfo(
             jsonData.blockNumber,
